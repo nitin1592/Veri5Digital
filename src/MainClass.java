@@ -15,8 +15,9 @@ public class MainClass {
 		
 		while (true) {
 			System.out.println("\n");
-			System.out.println("1. Enter number of players to add." );
-			System.out.println("2. Remove number of players to remove.");
+			System.out.println("total number of players present : " + players);
+			System.out.println("1. Add players.");
+			System.out.println("2. Remove players.");
 			System.out.println("3. Shuffle the cards in the deck.");
 			System.out.println("4. Print all the cards in deck.");
 			System.out.println("5. Start game.");
@@ -27,19 +28,32 @@ public class MainClass {
 			switch(input)
 			{
 				case 1:
+					System.out.println("Enter number of players to add : ");
 					n = myInput.nextInt();
-					if (players+n > 52) {
+					if (n < 0) {
 						System.out.println("Can't add more than 52 players.");
 						break;
 					}
+					else if (players+n > 52) {
+						System.out.println("Can't add more than 52 players.");
+						break;
+					}
+					
 					players += n;
+					break;
 				case 2:
+					System.out.println("Enter number of players to remove : ");
 					n = myInput.nextInt();
-					if (players < n) {
+					if (n < 0) {
+						System.out.println("Can't add more than 52 players.");
+						break;
+					}
+					else if (players < n) {
 						System.out.println("Can't remove more that existing players.");
 						break;
 					}
 					players -= n;
+					break;
 				case 3:
 					deck.shuffleCards();
 					break;
@@ -47,7 +61,13 @@ public class MainClass {
 					deck.printCards();
 					break;
 				case 5:
-					winner = deck.startGame();
+					if (players == 0) {
+						System.out.println("Please add players in the game.");
+						break;
+					}
+					ArrayList<Card> playerList = deck.startGame(players);
+					deck.printPlayerList(playerList);
+					deck.printWinner(playerList);
 					break;
 				case 6:
 					System.exit(0);

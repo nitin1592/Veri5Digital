@@ -1,48 +1,57 @@
-import java.util.Random;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
 enum Suit {
 	Spade, Heart, Club, Diamond
 }
 
 public class Deck {
-	private Card[] cards;
+	private ArrayList<Card> cards;
 	
 	public Deck () {
-		cards = new Card[52];
-		int index = 0;
+		cards = new ArrayList<Card>();
 		for (Suit suit : Suit.values()) {
 			for (int i=1; i<=13; i++) {
-				cards[index++] = new Card(i, suit, true);
+				cards.add(new Card(i, suit, true));
 			}
 		}
 	}
 	
-	public void swap (CardWrapper cw1, CardWrapper cw2) {
-		Card temp = cw1.getCard();
-		cw1.setCard(cw2.getCard());
-		cw2.setCard(temp);
-	}
-	
 	public void shuffleCards() {
-		Random rand = new Random();
-		for (int i = 0; i < 52; i++) 
-        {
-            int r = i + rand.nextInt(52 - i);
-            CardWrapper cw1 = new CardWrapper(cards[i]);
-            CardWrapper cw2 = new CardWrapper(cards[r]);
-            swap (cw1, cw2);
-        } 
+		Collections.shuffle(cards);
 	}
 	
 	public void printCards() {
 		for (int i=0; i<52; i++) {
-			if (cards[i].isPresentInDeck())
-				System.out.println(cards[i].getValue() + " " + cards[i].getSuit());
+			if (cards.get(i).isPresentInDeck())
+				System.out.println(cards.get(i).getValue() + " " + cards.get(i).getSuit());
 		}
 	}
 	
-	public Card startGame() {
-		return null;
+	public ArrayList<Card> startGame(int players) {
+		EnumMap<Suit, Integer> em = new EnumMap<Suit, Integer>(Suit.class);
+		em.put(Suit.Spade, 1);
+		em.put(Suit.Heart, 2);
+		em.put(Suit.Club, 3);
+		em.put(Suit.Diamond, 4);
+		
+		ArrayList<Card> playerCards = new ArrayList<Card>();
+		for (int i=0; i<players; i++) {
+			Card card = cards.get(i);
+			cards.get(i).setPresentInDeck(false);
+			playerCards.add(card);
+		}
+		
+		return playerCards;
+	}
+	
+	public void printPlayerList(ArrayList<Card> list) {
+		for (int i=0; i<list.size(); i++)
+			System.out.println("Player " + i + " card : " + list.get(i).getValue() + " of " + list.get(i).getSuit());
+	}
+	
+	public void printWinner(ArrayList<Card> playerList) {
+		
 	}
 
 }
