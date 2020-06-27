@@ -29,12 +29,6 @@ public class Deck {
 	}
 	
 	public ArrayList<Card> startGame(int players) {
-		EnumMap<Suit, Integer> em = new EnumMap<Suit, Integer>(Suit.class);
-		em.put(Suit.Spade, 1);
-		em.put(Suit.Heart, 2);
-		em.put(Suit.Club, 3);
-		em.put(Suit.Diamond, 4);
-		
 		ArrayList<Card> playerCards = new ArrayList<Card>();
 		for (int i=0; i<players; i++) {
 			Card card = cards.get(i);
@@ -51,7 +45,26 @@ public class Deck {
 	}
 	
 	public void printWinner(ArrayList<Card> playerList) {
+		EnumMap<Suit, Integer> em = new EnumMap<Suit, Integer>(Suit.class);
+		em.put(Suit.Spade, 1);
+		em.put(Suit.Heart, 2);
+		em.put(Suit.Club, 3);
+		em.put(Suit.Diamond, 4);
 		
+//		Collections.sort(playerList, (card1, card2) -> {
+//			if (card1.getValue() == card2.getValue())
+//				return em.get(card1.getSuit()) - em.get(card2.getSuit());
+//			return card2.getValue()-card1.getValue();
+//		});
+		int winner = 0;
+		for (int i=1; i<playerList.size(); i++) {
+			if (playerList.get(i).getValue() > playerList.get(winner).getValue())
+				winner = i;
+			else if (playerList.get(i).getValue() == playerList.get(winner).getValue()
+						&& em.get(playerList.get(i).getSuit()) < em.get(playerList.get(winner).getSuit()))
+				winner = i;
+		}
+		System.out.println("Winner is : " + "Player:" + winner);
 	}
 
 }
